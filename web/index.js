@@ -8,7 +8,8 @@ import shopify from "./shopify.js";
 import productCreator from "./product-creator.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 import webhooks from "./webhooks/index.js";
-
+import verifyProxy from "./middleware/verifyProxy.js";
+import proxyRouter from "./routes/app-proxy.js"
 
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
@@ -37,8 +38,7 @@ app.post (
   shopify.processWebhooks({ webhookHandlers: webhooks })
 )
 
-
-
+app.use("/proxy_route", verifyProxy, proxyRouter);
 // If you are adding routes outside of the /api path, remember to
 // also add a proxy rule for them in web/frontend/vite.config.js
 
